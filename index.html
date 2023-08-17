@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  </head>
+  <style>
+    img {
+      width: 95px;
+    }
+    .container {
+      border-radius: 2px;
+      border: solid 0.5px;
+      width: 500px;
+    }
+    form {
+      margin-top: 16px;
+    }
+    body {
+      margin-top: 40px;
+    }
+    strong {
+      font-size: 30px;
+    }
+    h2 {
+      font-size: 19px;
+      font-weight: 400;
+      margin-top: 20px;
+    }
+    .col {
+      margin-left: 300px;
+      margin-top: -60px;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <form id="search-form">
+        <input
+          type="search"
+          placeholder="Enter a city"
+          id="cityname"
+          id="search-text-input"
+        />
+
+        <input type="Submit" value="search" />
+      </form>
+
+      <h1 id="city">
+        Chicago
+      </h1>
+      <h2>
+        Monday 11:00
+      </h2>
+      <div class="row">
+        <div class="col">
+          Percipitation: 20%
+          <br />
+          Wind: 10mph <br />
+          Humidity:25%
+        </div>
+      </div>
+      <img
+        src="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/svg/26c5.svg"
+      />
+      <h3><stong id="temperature">19</stong>º F | C</h3>
+    </div>
+    <script>
+      let now = new Date();
+
+      let days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ];
+      let day = days[now.getDay()];
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+
+      let h2 = document.querySelector("h2");
+      h2.innerHTML = `${day}, ${hours}:${minutes}`;
+
+      function displayWeatherCondition(response) {
+        console.log(response.data);
+        document.querySelector("#city").innerHTML = response.data.name;
+        document.querySelector("#temperature").innerHTML = Math.round(
+          response.data.main.temp
+        );
+      }
+
+      function search(event) {
+        event.preventDefault();
+        let apiKey = "ca0db41e2e878c74a1dfc7ffece370d4";
+        let city = document.querySelector("#cityname").value;
+        let apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+        axios.get(apiURL).then(displayWeatherCondition);
+      }
+
+      let form = document.querySelector("#search-form");
+      form.addEventListener("submit", search);
+
+      let apiKey = "ca0db41e2e878c74a1dfc7ffece370d4";
+      let apiUrl =
+        "https://api.openweathermap.org/data/2.5/weather?lat=57&lon=-2.15&appid=ca0db41e2e878c74a1dfc7ffece370d4&units=metric";
+    </script>
+  </body>
+</html>
